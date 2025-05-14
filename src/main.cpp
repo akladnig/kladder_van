@@ -4,32 +4,11 @@
 // Definition of global constants
 // ----------------------------------------------------------------------------
 
-// Replace with your network credentials
-const char *ssid = "Curie";
-const char *password = "two2dogs";
-
 // Set web server port number to 80
 WiFiServer wifiServer(80);
 
 // Set up Json
 JsonDocument readings;
-
-// ----------------------------------------------------------------------------
-// Connecting to the WiFi network
-// ----------------------------------------------------------------------------
-
-void initWiFi()
-{
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  Serial.printf("Trying to connect [%s] ", WiFi.macAddress().c_str());
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    Serial.print(".");
-    delay(500);
-  }
-  Serial.printf(" %s\n", WiFi.localIP().toString().c_str());
-}
 
 tm *buildTime;
 
@@ -56,7 +35,7 @@ void setup()
   initTemperatureSensors();
 
   // locate devices on the bus
-  Serial.println("V0.3");
+  Serial.println("V0.1");
   Serial.println("Locating devices...");
   Serial.print("Found ");
   int deviceCount = getTemperatureSensorCount();
