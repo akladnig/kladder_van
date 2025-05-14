@@ -47,7 +47,6 @@ tm *getTime()
   {
     Serial.println("Failed to obtain time");
   }
-  Serial.println(&timeinfo, "%H");
   return &timeinfo;
 }
 
