@@ -4,5 +4,6 @@
 #include <WiFi.h>
 
 void initWiFi();
+WiFiClient getWiFiClient();
 
 #endif
