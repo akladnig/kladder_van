@@ -1,8 +1,5 @@
 #include <temperature.h>
 
-// Data wire is plugged into port 15 on the ESP32
-#define ONE_WIRE_BUS 15
-
 // ----------------------------------------------------------------------------
 // Definition of the Temperature Sensors
 // ----------------------------------------------------------------------------
