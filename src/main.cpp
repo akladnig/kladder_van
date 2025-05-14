@@ -4,9 +4,6 @@
 // Definition of global constants
 // ----------------------------------------------------------------------------
 
-// Set web server port number to 80
-WiFiServer wifiServer(80);
-
 // Set up Json
 JsonDocument readings;
 
@@ -24,18 +21,11 @@ void setup()
 
   buildTime = getTime();
 
-  // Print local IP address and start web server
-  Serial.println("");
-  Serial.println("WiFi connected.");
-  Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
-  wifiServer.begin();
-
   // Start up the library
   initTemperatureSensors();
 
   // locate devices on the bus
-  Serial.println("V0.1");
+  Serial.println("V0.2");
   Serial.println("Locating devices...");
   Serial.print("Found ");
   int deviceCount = getTemperatureSensorCount();
@@ -53,7 +43,8 @@ void loop()
   float temperature = getTemperature(temperatureSensor1);
   displayTemperature(temperature, buildTime);
 
-  WiFiClient client = wifiServer.available(); // Listen for incoming clients
+  // WiFiClient client = wifiServer.available(); // Listen for incoming clients
+  WiFiClient client = getWiFiClient(); // Listen for incoming clients
   char buffer[20];
   int i = 0;
 
