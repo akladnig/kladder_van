@@ -17,6 +17,7 @@ void setup()
   readings["temperature"] = 0.0;
 
   initWiFi();
+  initWebSocket();
   initTime();
 
   buildTime = getTime();
@@ -25,7 +26,7 @@ void setup()
   initTemperatureSensors();
 
   // locate devices on the bus
-  Serial.println("V0.2");
+  Serial.println("V0.1");
   Serial.println("Locating devices...");
   Serial.print("Found ");
   int deviceCount = getTemperatureSensorCount();
