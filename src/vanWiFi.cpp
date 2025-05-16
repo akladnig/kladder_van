@@ -7,12 +7,12 @@
 // Set web server port number to 80
 WiFiServer wifiServer(80);
 
-// Replace with your network credentials
-const char *ssid = "Curie";
-const char *password = "two2dogs";
-
 void initWiFi()
 {
+  // Network credentials for the van wifi network.
+  const char *ssid = HOME_SSID;
+  const char *password = HOME_PWD;
+
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
   Serial.printf("Trying to connect [%s] ", WiFi.macAddress().c_str());
