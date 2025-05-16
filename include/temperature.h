@@ -1,7 +1,8 @@
 #ifndef _TEMPERATURE_H
 #define _TEMPERATURE_H
 
-#include <hal.h>
+#include "hal.h"
+
 #include <DallasTemperature.h>
 #include <OneWire.h>
 

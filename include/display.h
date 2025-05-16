@@ -1,7 +1,7 @@
 #ifndef _DISPLAY_H
 #define _DISPLAY_H
 
-#include <globals.h>
+#include "globals.h"
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>

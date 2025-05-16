@@ -1,7 +1,7 @@
 #ifndef _RTC_TIME_H
 #define _RTC_TIME_H
 
-#include <globals.h>
+#include <Arduino.h>
 
 #include <time.h>
 
