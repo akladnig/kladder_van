@@ -1,5 +1,7 @@
 #include <vanWebsocket.h>
 
+// Based on example code from https://github.com/ESP32Async/ESPAsyncWebServer/blob/main/examples/WebSocket/WebSocket.ino
+
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
@@ -46,6 +48,7 @@ void onEvent(AsyncWebSocket *server,
   switch (type)
   {
   case WS_EVT_CONNECT:
+    ws.textAll("new client connected");
     Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
     break;
   case WS_EVT_DISCONNECT:
@@ -63,15 +66,52 @@ void onEvent(AsyncWebSocket *server,
 void initWebSocket()
 {
   // Network credentials for the van wifi network.
-  const char *ssid = VAN_SSID;
-  const char *password = VAN_PWD;
+  const char *ssid = MY_SSID;
+  const char *password = MY_PWD;
 
   int channel = 1;
   int ssid_hidden = 1; // hides the network
   int max_connection = 2;
 
-  WiFi.mode(WIFI_AP);
+  WiFi.mode(WIFI_MODE);
+
+  IPAddress local_IP(192, 168, 20, 7);
+  IPAddress gateway(192, 168, 20, 1);
+  IPAddress subnet(255, 255, 255, 0);
+
+  IPAddress myIP;
+
+#ifdef USE_HOME_WIFI
+  if (!WiFi.config(local_IP, gateway, subnet))
+  {
+    Serial.println("STA Failed to configure");
+  }
+
+  WiFi.begin(ssid, password);
+
+  Serial.printf("Trying to connect [%s] ", WiFi.macAddress().c_str());
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    Serial.print(".");
+    delay(500);
+  }
+
+  myIP = WiFi.localIP();
+#else
+  if (!WiFi.softAPConfig(local_IP, gateway, subnet))
+  {
+    Serial.println("AP Failed to configure");
+  }
+
   WiFi.softAP(ssid, password, channel, ssid_hidden, max_connection);
+
+  myIP = WiFi.softAPIP();
+#endif
+
+  Serial.print("IP address: ");
+  Serial.println(myIP);
+
   ws.onEvent(onEvent);
   server.addHandler(&ws);
+  server.begin();
 }
