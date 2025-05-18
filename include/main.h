@@ -6,6 +6,7 @@
 
 #include "globals.h"
 #include "hal.h"
+#include "devices.h"
 
 // #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
