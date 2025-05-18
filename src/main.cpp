@@ -16,7 +16,6 @@ void setup()
   readings["sensor"] = "ambientTemperature";
   readings["temperature"] = 0.0;
 
-  initWiFi();
   initWebSocket();
   initTime();
 
@@ -34,50 +33,25 @@ void setup()
   Serial.println(" devices.");
   Serial.println("");
 
-  printTemperatureSensorAddresses();
+  // printTemperatureSensorAddresses();
 
   initDisplay();
 }
 
+static uint32_t lastWS{0};
+static uint32_t deltaWS{100};
+static auto devices = Devices();
+
 void loop()
 {
-  float temperature = getTemperature(temperatureSensor1);
-  displayTemperature(temperature, buildTime);
+  uint32_t now = millis();
 
-  // WiFiClient client = wifiServer.available(); // Listen for incoming clients
-  WiFiClient client = getWiFiClient(); // Listen for incoming clients
-  char buffer[20];
-  int i = 0;
-
-  if (client)
-  { // If a new client connects,
-    Serial.println("client connected");
-
-    while (client.connected())
-    { // loop while the client's connected
-      Serial.print("client available: ");
-      Serial.println(String(client.available()));
-      while (client.available() > 0)
-      {                         // if there's bytes to read from the client,
-        char c = client.read(); // read a byte, then
-        Serial.write(c);        // print it out the serial monitor
-      }
-
-      float temperature = getTemperature(temperatureSensor1);
-      displayTemperature(temperature, buildTime);
-
-      char output[256];
-      readings["temperature"] = temperature;
-      serializeJson(readings, output);
-
-      sprintf(buffer, "%d", i);
-      String colon = ": ";
-      Serial.println(output);
-      client.println(output);
-      i++;
-      delay(1000);
-    }
-    client.stop();
-    Serial.println("Client disconnected.");
+  if (now - lastWS >= deltaWS)
+  {
+    devices.updateValues();
+    float temperature = devices.getSensor(Sensors::ambientTemperature);
+    displayTemperature(temperature, buildTime);
+    notifyClients();
+    lastWS = millis();
   }
 }
