@@ -39,8 +39,9 @@ void setup()
 }
 
 static uint32_t lastWS{0};
-static uint32_t deltaWS{100};
+static uint32_t deltaWS{1000};
 static auto devices = Devices();
+static String json;
 
 void loop()
 {
@@ -49,9 +50,11 @@ void loop()
   if (now - lastWS >= deltaWS)
   {
     devices.updateValues();
+    json = devices.toJson();
+    Serial.println(json);
     float temperature = devices.getSensor(Sensors::ambientTemperature);
     displayTemperature(temperature, buildTime);
-    notifyClients();
+    notifyClients(json);
     lastWS = millis();
   }
 }

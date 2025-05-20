@@ -7,7 +7,7 @@
 #include "configuration.h"
 
 void initWebSocket();
-void notifyClients();
+void notifyClients(String json);
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len);
 
 #endif
