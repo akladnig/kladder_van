@@ -3,3 +3,8 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
+.cache/clangd/index
+src/inols-err.log
+src/inols.log
+inols-err.log
+inols.log
