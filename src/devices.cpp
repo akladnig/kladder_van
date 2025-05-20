@@ -37,16 +37,28 @@ float Devices::getSensor(Sensors sensor)
 void Devices::updateValues()
 {
   ambientTemperature = getTemperature(Sensors::ambientTemperature);
+  batteryBoxTemperature = getTemperature(Sensors::batteryBoxTemperature);
 }
 
 /// @brief Initialise the JSON string. Each device is referenced by it's ID, with the value
 /// to be updated starting at offset 5
-String *Devices::toJson()
+String Devices::toJson()
 {
-  updateValues();
-  String atStr = String(ambientTemperature, 1);
-  String atJsonStr = String("{\"01\":" + atStr + "}");
+  String jsonStr = String();
 
-  jsonDeviceStr[1] = atJsonStr;
-  return jsonDeviceStr;
+  updateValues();
+  String bbtStr = String(batteryBoxTemperature, 1);
+  String bbtJsonStr = String("{\"0x06\":" + bbtStr + "},");
+  String atStr = String(ambientTemperature, 1);
+  String atJsonStr = String("{\"0x20\":" + atStr + "}");
+
+  jsonDeviceStr[1] = bbtJsonStr;
+  jsonDeviceStr[2] = atJsonStr;
+
+  // jsonDeviceStr[0] = atJsonStr;
+  for (String str : jsonDeviceStr)
+  {
+    jsonStr += str;
+  }
+  return jsonStr;
 }
