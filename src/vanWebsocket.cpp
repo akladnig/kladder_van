@@ -5,13 +5,13 @@
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
-void notifyClients()
+void notifyClients(String json)
 {
-  JsonDocument json;
-
-  char buffer[17];
-  size_t len = serializeJson(json, buffer);
-  ws.textAll(buffer, len);
+  int len = json.length() + 1;
+  char buffer[len];
+  json.toCharArray(buffer, len);
+  Serial.println(buffer);
+  ws.textAll(buffer);
 }
 
 void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
@@ -29,11 +29,11 @@ void handleWebSocketMessage(void *arg, uint8_t *data, size_t len)
       return;
     }
 
-    const char *action = json["action"];
-    if (strcmp(action, "toggle") == 0)
-    {
-      notifyClients();
-    }
+    // const char *action = json["action"];
+    // if (strcmp(action, "toggle") == 0)
+    // {
+    //   notifyClients();
+    // }
   }
 }
 
@@ -48,7 +48,7 @@ void onEvent(AsyncWebSocket *server,
   switch (type)
   {
   case WS_EVT_CONNECT:
-    ws.textAll("new client connected");
+    // ws.textAll("new client connected");
     Serial.printf("WebSocket client #%u connected from %s\n", client->id(), client->remoteIP().toString().c_str());
     break;
   case WS_EVT_DISCONNECT:
