@@ -1,9 +1,5 @@
 #include <main.h>
 
-// ----------------------------------------------------------------------------
-// Definition of global constants
-// ----------------------------------------------------------------------------
-
 // Set up Json
 JsonDocument readings;
 
@@ -23,6 +19,8 @@ void setup()
 
   // Start up the library
   initTemperatureSensors();
+  initSwitches();
+  initBattery();
 
   // locate devices on the bus
   Serial.println("V0.1");
