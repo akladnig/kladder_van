@@ -10,7 +10,6 @@ void notifyClients(String json)
   int len = json.length() + 1;
   char buffer[len];
   json.toCharArray(buffer, len);
-  Serial.println(buffer);
   ws.textAll(buffer);
 }
 
