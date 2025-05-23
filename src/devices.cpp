@@ -15,8 +15,8 @@ class Characteristics
 
 Devices::Devices()
 {
-  jsonDeviceStr[0] = String("[");
-  jsonDeviceStr[3] = String("]");
+  jsonDeviceStr[0] = String("{");
+  jsonDeviceStr[5] = String("}");
 }
 
 float Devices::getSensor(Sensors sensor)
@@ -38,6 +38,8 @@ void Devices::updateValues()
 {
   ambientTemperature = getTemperature(Sensors::ambientTemperature);
   batteryBoxTemperature = getTemperature(Sensors::batteryBoxTemperature);
+  powerSwitch = getSwitches(Switches::powerSwitch);
+  battery1in = getBattery(Sensors::battery1in);
 }
 
 /// @brief Initialise the JSON string. Each device is referenced by it's ID, with the value
@@ -48,14 +50,22 @@ String Devices::toJson()
 
   updateValues();
   String bbtStr = String(batteryBoxTemperature, 1);
-  String bbtJsonStr = String("{\"0x06\":" + bbtStr + "},");
+  String bbtJsonStr = String("\"0x06\":{\"0x04\":" + bbtStr + "},");
+
   String atStr = String(ambientTemperature, 1);
-  String atJsonStr = String("{\"0x20\":" + atStr + "}");
+  String atJsonStr = String("\"0x20\":{\"0x04\":" + atStr + "},");
+
+  String pswStr = String(powerSwitch, 1);
+  String pswJsonStr = String("\"0x0E\":{\"0x09\":" + pswStr + "},");
+
+  String b1iStr = String(battery1in, 1);
+  String b1iJsonStr = String("\"0x08\":{\"0x01\":" + b1iStr + "}");
 
   jsonDeviceStr[1] = bbtJsonStr;
   jsonDeviceStr[2] = atJsonStr;
+  jsonDeviceStr[3] = pswJsonStr;
+  jsonDeviceStr[4] = b1iJsonStr;
 
-  // jsonDeviceStr[0] = atJsonStr;
   for (String str : jsonDeviceStr)
   {
     jsonStr += str;

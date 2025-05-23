@@ -3,11 +3,26 @@
 
 #include <Arduino.h>
 #include "temperature.h"
+#include "switches.h"
+#include "battery.h"
 
 enum class Sensors
 {
   ambientTemperature,
-  batteryBoxTemperature
+  batteryBoxTemperature,
+  battery1in, // ID: 0x08
+  battery2in // ID: 0x09
+};
+
+enum class Switches
+{
+  powerSwitch, // ID: 0x0E
+  battery2Switch, // ID: 0x0F
+  solarSwitchSensor, // ID: 0x00
+  inverterFuseSwitchSensor, // ID: 0x11
+  pumpFuseSwitchSensor, // ID: 0x12
+  fridgeFuseSwitchSensor, // ID: 0x13
+  lightsAuxFuseSwitchSensor, // ID: 0x14
 };
 
 class Devices
@@ -42,6 +57,7 @@ private:
   float pumpFuseSwitchSensor; // ID: 0x12
   float fridgeFuseSwitchSensor; // ID: 0x13
   float lightsAuxFuseSwitchSensor; // ID: 0x14
+
   // Lights and Auxilliary Module
 
   float lightControl; // ID: 0x15
@@ -55,7 +71,7 @@ private:
   // Environment Module
   float ambientTemperature; // ID: 0x20
 
-  String jsonDeviceStr[4];
+  String jsonDeviceStr[6];
 
 public:
   Devices();
