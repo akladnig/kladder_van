@@ -21,5 +21,8 @@
 #include "vanWiFi.h"
 #include "vanWebsocket.h"
 #include "rtc_time.h"
+#include "switches.h"
+#include "battery.h"
 
 #endif
+
